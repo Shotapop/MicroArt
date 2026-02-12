@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Мікро-Арт</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Мікро-Арт</h1>
+  <p id="header-subtitle"></p>
+  <button class="menu-btn">☰</button>
+
+  <div class="overlay"></div>
+
+  <nav class="nav">
+    <a href="index.html">Головна</a>
+    <a href="bio.html">Біографія</a>
+    <a href="gallery.html">Галерея</a>
+    <a href="moments.html">Миттєвості</a>
+    <a href="photo.html">Фото</a>
+    <a href="publications.html">Публікації</a>
+    <a href="contacts.html">Контакти</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2 id="art-title"></h2>
+
+    <p class="sub">
+      <a href="gallery.html">← Назад до галереї</a>
+    </p>
+
+    <div class="item magnifier-box">
+      <img id="art-image" src="" alt="">
+      <div class="magnifier-lens"></div>
+    </div>
+
+    <p id="art-description" class="sub"></p>
+<div class="art-navigation">
+  <button id="prev-btn" class="nav-btn">
+    ← Попередня
+  </button>
+
+  <button id="next-btn" class="nav-btn">
+    Наступна →
+  </button>
+</div>
+  </section>
+</main>
+<script>
+
+/* =========================
+   ARTWORK DATA
+========================= */
+
+const artworks = {
+  5: {
+    title: "Caravan",
+    image: "http://microart.kiev.ua/images/miniatures/5.jpg",
+    description: "Опис роботи Caravan..."
+  },
+  11: {
+    title: "Робота 3",
+    image: "http://microart.kiev.ua/images/miniatures/11.jpg",
+    description: "Опис роботи 3..."
+  },
+  18: {
+    title: "Робота 2",
+    image: "http://microart.kiev.ua/images/miniatures/18.jpg",
+    description: "Опис роботи 2..."
+  }
+};
+
+/* =========================
+   SORT IDS
+========================= */
+
+const ids = Object.keys(artworks).map(Number).sort((a,b)=>a-b);
+
+/* =========================
+   GET CURRENT ID
+========================= */
+
+const params = new URLSearchParams(window.location.search);
+let id = Number(params.get("id"));
+
+let currentIndex = ids.indexOf(id);
+
+/* =========================
+   LOAD ARTWORK
+========================= */
+
+function loadArtwork(index) {
+
+  if (index < 0 || index >= ids.length) return;
+
+  currentIndex = index;
+  id = ids[index];
+
+  const art = artworks[id];
+
+  document.getElementById("art-title").textContent = art.title;
+  document.getElementById("header-subtitle").textContent = art.title;
+  document.getElementById("art-image").src = art.image;
+  document.getElementById("art-description").textContent = art.description;
+  document.getElementById("page-title").textContent = art.title + " — Мікро-Арт";
+
+  // Update URL without reload
+  history.replaceState(null, "", `art.html?id=${id}`);
+
+  // Disable buttons if needed
+  document.getElementById("prev-btn").disabled = currentIndex === 0;
+  document.getElementById("next-btn").disabled = currentIndex === ids.length - 1;
+}
+
+if (currentIndex !== -1) {
+  loadArtwork(currentIndex);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+document.getElementById("prev-btn").addEventListener("click", () => {
+  loadArtwork(currentIndex - 1);
+});
+
+document.getElementById("next-btn").addEventListener("click", () => {
+  loadArtwork(currentIndex + 1);
+});
+
+/* =========================
+   MENU
+========================= */
+
+const menuBtn = document.querySelector(".menu-btn");
+const nav = document.querySelector(".nav");
+const overlay = document.querySelector(".overlay");
+
+menuBtn.addEventListener("click", () => {
+  nav.classList.toggle("show");
+  overlay.classList.toggle("show");
+  document.body.classList.toggle("menu-open");
+});
+
+overlay.addEventListener("click", () => {
+  nav.classList.remove("show");
+  overlay.classList.remove("show");
+  document.body.classList.remove("menu-open");
+});
+
+/* =========================
+   MAGNIFIER
+========================= */
+
+document.querySelectorAll(".magnifier-box").forEach(box => {
+  const img = box.querySelector("img");
+  const lens = box.querySelector(".magnifier-lens");
+
+  box.addEventListener("mousemove", (e) => {
+    lens.style.display = "block";
+
+    const rect = box.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    lens.style.left = x + "px";
+    lens.style.top = y + "px";
+
+    lens.style.backgroundImage = `url('${img.src}')`;
+    lens.style.backgroundSize = (img.width * 2) + "px " + (img.height * 2) + "px";
+
+    lens.style.backgroundPosition =
+      `-${x * 2 - lens.offsetWidth / 2}px -${y * 2 - lens.offsetHeight / 2}px`;
+  });
+
+  box.addEventListener("mouseleave", () => {
+    lens.style.display = "none";
+  });
+});
+
+</script>
+</body>
+</html>
