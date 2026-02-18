@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Публікації</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Мікро-Арт</h1>
+  <p>Публікації</p>
+<button class="menu-btn">☰</button>
+
+<div class="overlay"></div>
+
+<nav class="nav">
+  <a href="index.html">Головна</a>
+  <a href="bio.html">Біографія</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="moments.html">Миттєвості</a>
+  <a href="photo.html">Фото</a>
+  <a href="publications.html">Публікації</a>
+  <a href="contacts.html">Контакти</a>
+</nav>
+</header>
+
+<main>
+  <section>
+    <h2>Публікації</h2>
+      <li><a href="#">Посилання 1</a></li>
+      <li><a href="#">Посилання 2</a></li>
+  </section>
+
+  <section>
+    <h2>Політика</h2>
+    <p>текст</p>
+  </section>
+</main>
+<script>
+const menuBtn = document.querySelector(".menu-btn");
+const nav = document.querySelector(".nav");
+const overlay = document.querySelector(".overlay");
+
+menuBtn.addEventListener("click", () => {
+  nav.classList.toggle("show");
+  overlay.classList.toggle("show");
+  document.body.classList.toggle("menu-open");
+});
+
+overlay.addEventListener("click", () => {
+  nav.classList.remove("show");
+  overlay.classList.remove("show");
+  document.body.classList.remove("menu-open");
+});
+</script>
+</body>
+</html>

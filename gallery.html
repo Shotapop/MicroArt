@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Галерея</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<style>
+
+section {
+  padding: 26px;
+  border-radius: var(--radius);
+  background: #000;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: var(--shadow);
+}
+</style>
+<header>
+  <h1>Мікро-Арт</h1>
+  <p>галерея</p>
+<button class="menu-btn">☰</button>
+
+<div class="overlay"></div>
+
+<nav class="nav">
+  <a href="index.html">Головна</a>
+  <a href="bio.html">Біографія</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="moments.html">Миттєвості</a>
+  <a href="photo.html">Фото</a>
+  <a href="publications.html">Публікації</a>
+  <a href="contacts.html">Контакти</a>
+</nav>
+</header>
+
+<main>
+  <section>
+    <h2>ГАЛЕРЕЯ РОБІТ</h2>
+
+<hr>
+
+<div class="gallery-grid">
+
+  <a href="art.html?id=1" class="item magnifier-box">
+<img src="images/1.jpg" alt="">
+    <div class="magnifier-lens"></div>
+    <span>Посилання 1</span>
+  </a>
+
+  <a href="art.html?id=2" class="item magnifier-box">
+<img src="images/2.jpg" alt="">
+    <div class="magnifier-lens"></div>
+    <span>Посилання 2</span>
+  </a>
+
+  <a href="art.html?id=3" class="item magnifier-box">
+<img src="images/3.jpg" alt="">
+    <div class="magnifier-lens"></div>
+    <span>Посилання 3</span>
+  </a>
+
+  <a href="art.html?id=4" class="item magnifier-box">
+<img src="images/4.jpg" alt="">
+    <div class="magnifier-lens"></div>
+    <span>Посилання 4</span>
+  </a>
+
+  <a href="art.html?id=5" class="item magnifier-box">
+<img src="images/5.jpg" alt="">
+    <div class="magnifier-lens"></div>
+    <span>Посилання 5</span>
+  </a>
+
+</div>
+  </section>
+</main>
+
+<script>
+const menuBtn = document.querySelector(".menu-btn");
+const nav = document.querySelector(".nav");
+const overlay = document.querySelector(".overlay");
+
+menuBtn.addEventListener("click", () => {
+  nav.classList.toggle("show");
+  overlay.classList.toggle("show");
+  document.body.classList.toggle("menu-open");
+});
+
+overlay.addEventListener("click", () => {
+  nav.classList.remove("show");
+  overlay.classList.remove("show");
+  document.body.classList.remove("menu-open");
+});
+  document.querySelectorAll(".magnifier-box").forEach(box=>{
+    const img = box.querySelector("img");
+    const lens = box.querySelector(".magnifier-lens");
+
+    box.addEventListener("mousemove",(e)=>{
+      lens.style.display="block";
+
+      const rect = box.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      lens.style.left = x+"px";
+      lens.style.top  = y+"px";
+
+      lens.style.backgroundImage = `url('${img.src}')`;
+      lens.style.backgroundSize = (img.width*2)+"px "+(img.height*2)+"px";
+
+      lens.style.backgroundPosition =
+        `-${x*2 - lens.offsetWidth/2}px -${y*2 - lens.offsetHeight/2}px`;
+    });
+
+    box.addEventListener("mouseleave",()=>{
+      lens.style.display="none";
+    });
+  });
+</script>
+
+</body>
+</html>
