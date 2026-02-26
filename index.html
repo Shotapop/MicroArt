@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Головна</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<style>
+h2 {
+  text-align: center;
+}
+section {
+    text-align: center;
+}
+.magnifier{
+position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  display: none;
+  /* This is crucial: it lets clicks "pass through" the magnifier */
+  pointer-events: none; 
+  background-repeat: no-repeat;
+  backdrop-filter: blur(5px);
+  z-index: 10; /* Lower than buttons */
+}
+.text-bubble {
+text-align: center;
+}
+</style>
+<header>
+  <div class="logo"><h1>🔬 MicroArt</h1></div>
+<button class="menu-btn">☰</button>
+
+<div class="overlay"></div>
+
+<nav class="nav">
+  <a href="index.html">Головна</a>
+  <a href="bio.html">Біографія</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="moments.html">Миттєвості</a>
+  <a href="photo.html">Фото</a>
+</nav>
+</header>
+
+<main>
+<section class="hero">
+    <h2>Музей мікромініатюр Миколи Сядристого</h2>
+
+<hr>
+    <p class="sub">Ласкаво просимо до світу, де мистецтво межує з неможливим. Виставка робіт Миколи Сядристого, розташована на території Національного Києво-Печерського історико-культурного заповідника, представляє унікальне явище — «мікромініатюру». Цей термін, якого раніше не було у словниках, народився саме завдяки творчості українського майстра.</p>
+<button onclick="scrollToSection('maingal')">Дослідити</button>
+  </section>
+<section id="maingal" class="maingal">
+  <h2>Мистецтво на межі можливостей</h2>
+<hr>
+    <p class="sub">Кожна мініатюра створюється виключно вручну за авторською технологією. Робота над такими творами вимагає не лише художнього таланту, а й надзвичайного контролю над власним тілом: найтонші рухи виконуються майстром у паузах між ударами серця.</p>
+  <div class="slider">
+    <button class="prev">‹</button>
+    <div class="slides">
+      <img src="img\1.jpg" class="slide active">
+      <img src="img\2.jpg" class="slide">
+      <img src="img\3.jpg" class="slide">
+    </div>
+    <button class="next">›</button>
+  </div>
+
+  <div class="magnifier"></div>
+</section>
+<section id="contacts" class="contacts">
+    <div class="contact-container-single">
+      
+      <div class="contact-box">
+        <p>З автором мікромініатюр можна зв'язатися по e-mail:</p>
+        <a href="mailto:microart2012@ukr.net" class="email-link">microart2012@ukr.net</a>
+      </div>
+
+      <div class="contact-box">
+        <p>Діюча виставка "Мікромініатюри Миколи Сядристого" знаходиться за адресою:</p>
+        <p><strong style="color: var(--gold);">м. Київ, вул. Лаврська 9, корпус 4</strong></p>
+      </div>
+    </div>
+
+      <div class="map-box-standalone">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2541.343885623696!2d30.55502757688091!3d50.434691788229875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cf673627999f%3A0xf0f760c8903f7870!2z0JzRg9C30LXQuSDQvNGW0LrRgNC-0LzRltC90ZbQsNGC0Y7RgCDQnNC40LrQvtC70Lgg0KHRj9C00YDQuNGB0YLQvtCz0L4!5e0!3m2!1suk!2sua!4v1708285000000!5m2!1suk!2sua" 
+          width="100%" 
+          height="450" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy">
+        </iframe>
+      </div>
+            <div class="text-bubble">
+        <p>Інформацію про виставку "Мікромініатюри Миколи Сядристого" можна
+також переглянути на сайті Національного Києво-Печерського історико-культурного
+заповідника за посиланням:</p>
+        <a href="https://kplavra.kyiv.ua/ua/node/1565" class="email-link">https://kplavra.kyiv.ua/ua/node/1565</a>
+      </div>
+</section>
+<footer>
+  <div>© 2026 М. Сядристий, «Мікроарт»</div>
+  <div class="socials">
+<div class="socials">
+  <a href="https://www.facebook.com/people/Mykola-Syadristy/100068666065075/" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+  <a href="https://www.youtube.com/watch?v=JftGvoWEOpg" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+</div>
+  </div>
+</footer>
+</main>
+<script>
+const menuBtn = document.querySelector(".menu-btn");
+const nav = document.querySelector(".nav");
+const overlay = document.querySelector(".overlay");
+
+menuBtn.addEventListener("click", () => {
+  nav.classList.toggle("show");
+  overlay.classList.toggle("show");
+  document.body.classList.toggle("menu-open");
+});
+
+overlay.addEventListener("click", () => {
+  nav.classList.remove("show");
+  overlay.classList.remove("show");
+  document.body.classList.remove("menu-open");
+});
+function scrollToSection(id){
+  document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+
+// Slider
+const slides = document.querySelectorAll(".slide");
+let index = 0;
+document.querySelector(".next").onclick = () => changeSlide(1);
+document.querySelector(".prev").onclick = () => changeSlide(-1);
+
+function changeSlide(dir){
+  slides[index].classList.remove("active");
+  index = (index + dir + slides.length) % slides.length;
+  slides[index].classList.add("active");
+}
+
+// Magnifier Logic
+const magnifier = document.querySelector(".magnifier");
+const gallery = document.querySelector(".slides");
+
+gallery.addEventListener("mousemove", function(e) {
+  const img = document.querySelector(".slide.active");
+  if (!img) return;
+
+  const rect = img.getBoundingClientRect();
+  
+  // Calculate mouse position relative to the image
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  // Check if the mouse is actually over the image pixels
+  const isInside = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
+  
+  // Check if we are hovering over a button (prev/next)
+  const isOverButton = e.target.closest('button');
+
+  if (isInside && !isOverButton) {
+    magnifier.style.display = "block";
+    magnifier.style.left = e.pageX - 75 + "px";
+    magnifier.style.top = e.pageY - 75 + "px";
+    magnifier.style.backgroundImage = `url(${img.src})`;
+    magnifier.style.backgroundSize = (rect.width * 2) + "px " + (rect.height * 2) + "px";
+    magnifier.style.backgroundPosition = `-${x * 2 - 75}px -${y * 2 - 75}px`;
+  } else {
+    magnifier.style.display = "none";
+  }
+});
+
+// Hide when leaving the gallery container entirely
+gallery.addEventListener("mouseleave", () => {
+  magnifier.style.display = "none";
+});
+// GSAP animation
+gsap.from(".hero h1", {opacity:0, y:-50, duration:1});
+gsap.from(".hero p", {opacity:0, y:50, duration:1, delay:0.3});
+</script>
+</body>
+</html>

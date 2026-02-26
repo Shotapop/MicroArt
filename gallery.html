@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Галерея</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo"><h1>🔬 MicroArt</h1></div>
+<button class="menu-btn">☰</button>
+
+<div class="overlay"></div>
+
+<nav class="nav">
+  <a href="index.html">Головна</a>
+  <a href="bio.html">Біографія</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="moments.html">Миттєвості</a>
+  <a href="photo.html">Фото</a>
+</nav>
+</header>
+
+<main>
+  <section>
+    <h2>Галерея робіт</h2>
+
+<hr>
+
+<div class="gallery-grid">
+
+  <a href="art.html?id=1" class="item magnifier-box">
+<img src="img/1.jpg" alt="">
+    <div class="magnifier-lens"></div>
+    <span>Пам'яті Олександра Гріна</span>
+  </a>
+
+  <a href="art.html?id=2" class="item magnifier-box">
+<img src="img/2.jpg" alt="">
+    <div class="magnifier-lens"></div>
+    <span>Паралельний світ</span>
+  </a>
+
+  <a href="art.html?id=3" class="item magnifier-box">
+<img src="img/3.jpg" alt="">
+    <div class="magnifier-lens"></div>
+    <span>Лисиця і виноград</span>
+  </a>
+
+  <a href="art.html?id=4" class="item magnifier-box">
+<img src="img/4.jpg" alt="">
+    <div class="magnifier-lens"></div>
+    <span>Зустріч</span>
+  </a>
+
+  <a href="art.html?id=5" class="item magnifier-box">
+<img src="img/5.jpg" alt="">
+    <div class="magnifier-lens"></div>
+    <span>Мисливський Сокіл</span>
+  </a>
+
+</div>
+  </section>
+<footer>
+  <div>© 2026 М. Сядристий, «Мікроарт»</div>
+  <div class="socials">
+<div class="socials">
+  <a href="https://www.facebook.com/people/Mykola-Syadristy/100068666065075/" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+  <a href="https://www.youtube.com/watch?v=JftGvoWEOpg" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+</div>
+  </div>
+</footer>
+</main>
+
+<script>
+const menuBtn = document.querySelector(".menu-btn");
+const nav = document.querySelector(".nav");
+const overlay = document.querySelector(".overlay");
+
+menuBtn.addEventListener("click", () => {
+  nav.classList.toggle("show");
+  overlay.classList.toggle("show");
+  document.body.classList.toggle("menu-open");
+});
+
+overlay.addEventListener("click", () => {
+  nav.classList.remove("show");
+  overlay.classList.remove("show");
+  document.body.classList.remove("menu-open");
+});
+  document.querySelectorAll(".magnifier-box").forEach(box=>{
+    const img = box.querySelector("img");
+    const lens = box.querySelector(".magnifier-lens");
+
+    box.addEventListener("mousemove",(e)=>{
+      lens.style.display="block";
+
+      const rect = box.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      lens.style.left = x+"px";
+      lens.style.top  = y+"px";
+
+      lens.style.backgroundImage = `url('${img.src}')`;
+      lens.style.backgroundSize = (img.width*2)+"px "+(img.height*2)+"px";
+
+      lens.style.backgroundPosition =
+        `-${x*2 - lens.offsetWidth/2}px -${y*2 - lens.offsetHeight/2}px`;
+    });
+
+    box.addEventListener("mouseleave",()=>{
+      lens.style.display="none";
+    });
+  });
+</script>
+
+</body>
+</html>

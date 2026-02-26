@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Миттєвості — Микола Сядристий</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<style>
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px 25px;
+  border-radius: 50px; /* Кругла форма панелі */
+  margin-top: 15px;
+}
+
+.ctrl-btn {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+}
+
+.ctrl-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  color: white;
+}
+
+.play-btn {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  background: var(--gold) !important;
+  color: var(--bg) !important;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.play-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(214, 178, 94, 0.4);
+}
+
+.seek {
+  flex: 1;
+  accent-color: var(--gold);
+  cursor: pointer;
+  height: 4px;
+}
+
+.time {
+  font-size: 0.85rem;
+  font-family: monospace;
+  min-width: 45px;
+}
+   h2 {
+   text-align: center;
+}
+  /* Сетка для віршів */
+  .poetry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
+  }
+
+  .poem-card {
+    background: rgba(255, 252, 240, 0.05); /* Легкий відтінок паперу */
+    border: 1px solid rgba(214, 178, 94, 0.2);
+    border-radius: 15px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    transition: 0.3s ease;
+    position: relative;
+  }
+
+  .poem-card:hover {
+    border-color: var(--gold);
+    background: rgba(255, 252, 240, 0.08);
+    transform: translateY(-5px);
+  }
+
+  /* Ті самі БУКВИЦІ (Drop Caps) */
+  .poem-text p::first-letter {
+    font-size: 3.2rem;
+    float: left;
+    margin-right: 10px;
+    color: var(--gold);
+    font-family: "Georgia", serif;
+    line-height: 0.9;
+    font-weight: bold;
+  }
+
+  .poem-text p {
+    margin: 0;
+    line-height: 1.7;
+    white-space: pre-line;
+    color: var(--text);
+  }
+
+  /* Обмеження висоти для компактності */
+  .poem-text {
+    max-height: 180px; 
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.5s ease;
+  }
+
+  .poem-card.expanded .poem-text {
+    max-height: 3000px;
+  }
+
+  /* Градієнтне затухання для прихованого тексту */
+  .poem-text::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 50px;
+    background: linear-gradient(transparent, rgba(11, 15, 20, 0.9));
+    transition: 0.3s;
+  }
+
+  .poem-card.expanded .poem-text::after {
+    opacity: 0;
+  }
+
+  .poem-year {
+    display: block;
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: var(--gold);
+    font-style: italic;
+    text-align: right;
+    opacity: 0.8;
+  }
+
+  .read-more-btn {
+    background: none;
+    border: none;
+    color: var(--gold);
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 15px;
+    padding: 0;
+    font-size: 0.9rem;
+    width: fit-content;
+  }
+
+  /* Стилі для вкладок */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  
+  .track-item.active-track {
+    border-color: var(--gold);
+    background: rgba(214, 178, 94, 0.1);
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo"><h1>🔬 MicroArt</h1></div>
+  <button class="menu-btn">☰</button>
+  <div class="overlay"></div>
+  <nav class="nav">
+    <a href="index.html">Головна</a>
+    <a href="bio.html">Біографія</a>
+    <a href="gallery.html">Галерея</a>
+    <a href="moments.html">Миттєвості</a>
+    <a href="photo.html">Фото</a>
+  </nav>
+</header>
+
+<main>
+  <div class="art-navigation">
+    <button class="nav-btn active" onclick="openTab(event, 'poetry')">Поезія</button>
+    <button class="nav-btn" onclick="openTab(event, 'music')">Музика</button>
+    <button class="nav-btn" onclick="openTab(event, 'video')">Відео</button>
+  </div>
+
+  <section id="poetry" class="tab-content active">
+    <h2>ПОЕЗІЯ</h2>
+    <div class="poetry-grid">
+      
+      <article class="poem-card">
+        <div class="poem-text">
+          <p>Это кажется только, что идешь по прямой –
+Сквозь года и манящие дали,
+А по сути – спешим, чтобы снова домой
+Возвратиться по вечной спирали.</p>
+        </div>
+        <span class="poem-year">1983 р.</span>
+        <button class="read-more-btn" onclick="togglePoem(this)">Читати повністю</button>
+      </article>
+
+      <article class="poem-card">
+        <div class="poem-text">
+          <p>Вперед, мой конь, сквозь смутные ряды   
+Своих и устранившихся средь боя,
+Где нет ни славы легкой, ни покоя,
+А впереди – желанные труды.
+
+Вперед, мой конь, душа, не унывай,
+Сливайтесь в целое – стрела и колесница!
+Сказал Поэт: "Покой нам только снится!"
+Наивен тот, кто ищет в жизни рай.</p>
+        </div>
+        <span class="poem-year">1980 р.</span>
+        <button class="read-more-btn" onclick="togglePoem(this)">Читати повністю</button>
+      </article>
+
+      <article class="poem-card">
+        <div class="poem-text">
+          <p>Як згоріле насіння,
+Спить в землі покоління.
+Спить в степах і в болотах,
+І в холодних широтах.
+ 
+Сплять в землі і в воді,
+І старі й молоді,
+Сплять сумні і веселі,
+Сплять двори й цілі села.
+ 
+Сплять і губи, і коси,
+Поцілункиі роси.
+Сплять пісні і надії,
+І тривоги, і мрії.
+ 
+Як згоріле насіння,
+Спить в землі покоління.
+І долаючи путь,
+Оглянись!
+Не забудь!</p>
+        </div>
+        <span class="poem-year">1967 р.</span>
+        <button class="read-more-btn" onclick="togglePoem(this)">Читати повністю</button>
+      </article>
+
+      <article class="poem-card">
+        <div class="poem-text">
+          <p>Прошла война…
+Но вот ее следы –
+Обелисков строгие ряды.
+Им не страшны
+Ни холод,
+Ни жара.
+Уснуло намертво
+Последнее:"Ура!".
+ 
+Уходят в вечность
+На граните даты.
+И вечно молоды на карточках
+Солдаты.
+Прошла война. Повсюду тишина,
+Оплаченная жизнью.
+И сполна!</p>
+        </div>
+        <span class="poem-year">1971 р., Прага</span>
+        <button class="read-more-btn" onclick="togglePoem(this)">Читати повністю</button>
+      </article>
+
+      <article class="poem-card">
+        <div class="poem-text">
+          <p>Вона давно вже не чекає
+Того, що згинув на війні,
+І ніби літо догорає
+Її надія в сивині.
+                     
+Коли ж гроза чи завірюха
+Свій танок в темряві зав'є,
+Вона встає і довго слуха,
+Як гілка чітко в шибку б'є.</p>
+        </div>
+        <span class="poem-year">1965 р.</span>
+        <button class="read-more-btn" onclick="togglePoem(this)">Читати повністю</button>
+      </article>
+
+      <article class="poem-card">
+        <div class="poem-text">
+          <p>І сплю, й не сплю. А щедре літо
+Величний спокій в серце ллє,
+І, як в дитинстві, все на світі
+І незалежне, і моє:
+І цей стрімкий у небі сокіл,
+Шляхи далекі, що димлять,
+І осокорів ряд високий,
+Що наді мною ледь шумлять…</p>
+        </div>
+        <span class="poem-year">1976 р.</span>
+        <button class="read-more-btn" onclick="togglePoem(this)">Читати повністю</button>
+      </article>
+
+    </div>
+  </section>
+
+<section id="music" class="tab-content">
+  <h2>МУЗИКА</h2>
+  
+  <div class="audio-player main-player">
+    <div class="audio-title" id="current-track-title"></div>
+    <audio id="main-audio"></audio>
+    
+    <div class="audio-controls">
+      <button class="ctrl-btn" onclick="skip(-10)" title="Назад 10 сек">
+        <i class="fas fa-undo"></i>
+      </button>
+      
+      <button class="play-btn" id="main-play-btn">▶</button>
+      
+      <button class="ctrl-btn" onclick="skip(10)" title="Вперед 10 сек">
+        <i class="fas fa-redo"></i>
+      </button>
+
+      <input type="range" class="seek" id="main-seek" value="0">
+      <span class="time" id="main-time">0:00</span>
+    </div>
+  </div>
+  
+  <div class="playlist">
+    <div class="track-item" onclick="playTrack('audio/1.mp3', 'Біла мрія', this)">1. Біла мрія</div>
+    <div class="track-item" onclick="playTrack('audio/2.mp3', 'Лілії', this)">2. Лілії</div>
+    <div class="track-item" onclick="playTrack('audio/3.mp3', 'Щедре літо', this)">3. Щедре літо</div>
+    <div class="track-item" onclick="playTrack('audio/4.mp3', 'Старовинний гімн', this)">4. Старовинний гімн</div>
+    </div>
+</section>
+
+
+<section id="video" class="tab-content">
+  <h2>ВІДЕО</h2>
+  <div class="video-grid">
+    
+    <div class="video-card">
+      <div class="video-container">
+        <iframe 
+          src="https://www.youtube.com/embed/OMHA475a2CY" 
+          title="Музей мікромініатюри М.Сядристого" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>
+      <p class="video-caption">Музей мікромініатюри М.Сядристого</p>
+    </div>
+
+    <div class="video-card">
+      <div class="video-container">
+        <iframe 
+          src="https://www.youtube.com/embed/JftGvoWEOpg" 
+          title="Микола Сядристий: зустріч в Лаврі" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>
+      <p class="video-caption">Микола Сядристий: зустріч в Лаврі</p>
+    </div>
+
+  </div>
+</section>
+
+  <footer>
+    <div>© 2026 М. Сядристий, «Мікроарт»</div>
+    <div class="socials">
+      <a href="https://www.facebook.com/people/Mykola-Syadristy/100068666065075/" aria-label="Facebook">
+        <i class="fa-brands fa-facebook"></i>
+      </a>
+      <a href="https://www.youtube.com/watch?v=JftGvoWEOpg" aria-label="YouTube">
+        <i class="fa-brands fa-youtube"></i>
+      </a>
+    </div>
+  </footer>
+</main>
+
+<script>
+function openTab(evt, tabId) {
+  document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(tabId).style.display = 'block';
+  evt.currentTarget.classList.add('active');
+}
+
+function togglePoem(btn) {
+  const card = btn.closest('.poem-card');
+  card.classList.toggle('expanded');
+  btn.textContent = card.classList.contains('expanded') ? 'Згорнути' : 'Читати повністю';
+}
+
+const mainAudio = document.getElementById('main-audio');
+const playBtn = document.getElementById('main-play-btn');
+
+function playTrack(src, title, element) {
+  mainAudio.src = src;
+  document.getElementById('current-track-title').innerText = title;
+  document.querySelectorAll('.track-item').forEach(item => item.classList.remove('active-track'));
+  element.classList.add('active-track');
+  mainAudio.play();
+  playBtn.textContent = "⏸";
+}
+
+playBtn.addEventListener("click", () => {
+  if (!mainAudio.src) return;
+  if (mainAudio.paused) { mainAudio.play(); playBtn.textContent = "⏸"; }
+  else { mainAudio.pause(); playBtn.textContent = "▶"; }
+});
+
+const menuBtn = document.querySelector(".menu-btn");
+const nav = document.querySelector(".nav");
+const overlay = document.querySelector(".overlay");
+
+menuBtn.addEventListener("click", () => {
+  nav.classList.toggle("show");
+  overlay.classList.toggle("show");
+  document.body.classList.toggle("menu-open");
+});
+function skip(seconds) {
+  if (!mainAudio.src) return;
+  mainAudio.currentTime += seconds;
+}
+</script>
+
+</body>
+</html>

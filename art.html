@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Мікро-Арт</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<style>
+
+section {
+  padding: 26px;
+  border-radius: var(--radius);
+  background: #000;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: var(--shadow);
+}
+.item {
+  background: #000;
+margin: 80px auto;
+  display: flex;          /* This centers the image */
+  justify-content: center; /* This centers the image */
+  align-items: center;     /* This centers the image */
+  position: relative;
+  overflow: hidden;
+  height: 450px;           /* Give the black box a set height */
+}
+.magnifier-box {
+  position: relative;
+  overflow: visible !important;
+  border-radius: 10px;
+}
+.magnifier-box img {
+  width: 40%;
+  /* This ensures the image stays a reasonable size and is centered */
+  width: 100%;
+  max-width: 400px; /* Adjust this to control how big the photo is */
+  height: auto;
+  display: block;
+}
+.magnifier-lens {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 20px rgba(0,0,0,0.8);
+  display: none;
+  pointer-events: none; /* This is the most important line */
+  background-repeat: no-repeat;
+  z-index: 100;
+  /* This centers the lens on your cursor */
+  transform: translate(-50%, -50%); 
+}
+
+</style>
+<header>
+  <div class="logo"><h1>🔬 MicroArt</h1></div>
+  <p id="header-subtitle"></p>
+  <button class="menu-btn">☰</button>
+
+  <div class="overlay"></div>
+
+  <nav class="nav">
+    <a href="index.html">Головна</a>
+    <a href="bio.html">Біографія</a>
+    <a href="gallery.html">Галерея</a>
+    <a href="moments.html">Миттєвості</a>
+    <a href="photo.html">Фото</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2 id="art-title"></h2>
+<hr>
+    <p class="sub">
+      <a href="gallery.html">← Назад до галереї</a>
+    </p>
+
+<div class="item magnifier-box">
+  <img id="art-image" src="" alt="">
+  <div class="magnifier-lens"></div>
+</div>
+
+    <p id="art-description" class="sub"></p>
+<div class="art-navigation">
+  <button id="prev-btn" class="nav-btn">
+    ← Попередня
+  </button>
+
+  <button id="next-btn" class="nav-btn">
+    Наступна →
+  </button>
+</div>
+  </section>
+<footer>
+  <div>© 2026 М. Сядристий, «Мікроарт»</div>
+  <div class="socials">
+<div class="socials">
+  <a href="https://www.facebook.com/people/Mykola-Syadristy/100068666065075/" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+  <a href="https://www.youtube.com/watch?v=JftGvoWEOpg" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+</div>
+  </div>
+</footer>
+</main>
+<script>
+
+/* =========================
+   ARTWORK DATA
+========================= */
+
+const artworks = {
+  1: {
+    title: "Пам'яті Олександра Гріна",
+    image: "img/1.jpg",
+    description: "Довжина фрегата 3,5 мм, товщина оснастки 0,003 мм (що в поперечному зрізі в 400 разів тонше людської волосини). Модель складається з 337 деталей. В цій роботі продемонстровано різнобічні методи обробки матеріалу,а також витримано об'ємний монтаж, рівень якого недосяжній для сучасних технічних засобів. Мікромініатюра виготовлена із золота. — 1975 р."
+  },
+  2: {
+    title: "Паралельний світ",
+    image: "img/2.jpg",
+    description: "Комар в натуральну величину (довжина 6,5 мм), виконаний із золота. На носі комара сидить під золотою парасолькою дівчинка. — 1990 р."
+  },
+  3: {
+    title: "Лисиця і виноград",
+    image: "img/3.jpg",
+    description: "Композиція на тему байки Езопа виконана із золота і розміщена у виноградному зерні. — 1989 р."
+  },
+  4: {
+    title: "Зустріч",
+    image: "img/4.jpg",
+    description: "Композиція виготовлена із золота і розміщена на крупиці цукру. — 2005 р."
+  },
+  5: {
+    title: "Мисливський Сокіл",
+    image: "img/5.jpg",
+    description: "Компоцизія виконана із золота і розміщена у виноградному зерні."
+  }
+};
+const ids = Object.keys(artworks).map(Number).sort((a,b)=>a-b);
+const params = new URLSearchParams(window.location.search);
+let id = Number(params.get("id"));
+let currentIndex = ids.indexOf(id);
+
+function loadArtwork(index) {
+  if (index < 0 || index >= ids.length) return;
+  currentIndex = index;
+  id = ids[index];
+  const art = artworks[id];
+
+  document.getElementById("art-title").textContent = art.title;
+  document.getElementById("art-image").src = art.image;
+  document.getElementById("art-description").textContent = art.description;
+  history.replaceState(null, "", `art.html?id=${id}`);
+
+  document.getElementById("prev-btn").disabled = currentIndex === 0;
+  document.getElementById("next-btn").disabled = currentIndex === ids.length - 1;
+}
+
+if (currentIndex !== -1) loadArtwork(currentIndex);
+
+document.getElementById("prev-btn").addEventListener("click", () => loadArtwork(currentIndex - 1));
+document.getElementById("next-btn").addEventListener("click", () => loadArtwork(currentIndex + 1));
+
+/* =========================
+   MOBILE MENU
+========================= */
+const menuBtn = document.querySelector(".menu-btn");
+const nav = document.querySelector(".nav");
+const overlay = document.querySelector(".overlay");
+
+menuBtn.addEventListener("click", () => {
+  nav.classList.toggle("show");
+  overlay.classList.toggle("show");
+  document.body.classList.toggle("menu-open");
+});
+
+overlay.addEventListener("click", () => {
+  nav.classList.remove("show");
+  overlay.classList.remove("show");
+  document.body.classList.remove("menu-open");
+});
+
+/* =========================
+   FIXED MAGNIFIER LOGIC
+========================= */
+document.querySelectorAll(".magnifier-box").forEach(box => {
+  const img = box.querySelector("img");
+  const lens = box.querySelector(".magnifier-lens");
+
+  box.addEventListener("mousemove", (e) => {
+    // 1. Get image boundaries
+    const rect = img.getBoundingClientRect(); 
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // 2. Check if we are over the image (not the empty black space)
+    if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+      lens.style.display = "block";
+      
+      // Position lens relative to the black container
+      const boxRect = box.getBoundingClientRect();
+      lens.style.left = (e.clientX - boxRect.left) + "px";
+      lens.style.top = (e.clientY - boxRect.top) + "px";
+
+      // Apply zoom
+      lens.style.backgroundImage = `url('${img.src}')`;
+      lens.style.backgroundSize = (rect.width * 2) + "px " + (rect.height * 2) + "px";
+      lens.style.backgroundPosition = `-${x * 2 - lens.offsetWidth / 2}px -${y * 2 - lens.offsetHeight / 2}px`;
+    } else {
+      lens.style.display = "none";
+    }
+  });
+
+  box.addEventListener("mouseleave", () => {
+    lens.style.display = "none";
+  });
+});
+</script>
+</body>
+</html>
